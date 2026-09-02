@@ -1,27 +1,19 @@
-# Assetto Corsa Telemetry Transmitter
+# Server Live Telemetry
+## Online Intermediary Server
 
-## Overview
-This repository contains the backend service for the **Live Telemetry** dashboard. It is a lightweight Node.js server that acts as a real-time bridge between Assetto Corsa and the web-based frontend application.
+Welcome to the **Transmissor Live Telemetry** repository. This project now acts as the **online intermediary server** responsible for receiving, processing, and distributing real-time telemetry data from **Assetto Corsa**.
 
-Since web browsers cannot natively listen to local UDP ports for security reasons, this transmitter solves the problem by receiving the raw UDP telemetry data from the game and broadcasting it securely via WebSockets to the web dashboard.
+As the project's architecture has evolved, the local data capture is now handled by a separate client code. This repository focuses exclusively on managing WebSocket connections and routing data packets in the cloud or local network.
 
-## Architecture
-1. **Assetto Corsa (Python Script):** Reads the game's shared memory data and sends it via UDP to `127.0.0.1:9996`.
-2. **Telemetry Transmitter (This Node.js App):** Listens to UDP port `9996` and parses the incoming JSON payloads.
-3. **Socket.io Server:** Broadcasts the parsed telemetry data on `localhost:3000`.
-4. **Web Dashboard:** The remote web application connects to this local WebSocket server to render track maps, tyre data, and car physics in real-time.
+### 🚀 Key Features
 
----
+*   **Real-Time Communication:** Uses Node.js and Socket.io for ultra-low latency bidirectional communication between the data source and the visualization dashboard.
+*   **Stint and Driver Management:** Advanced data segregation. If multiple drivers are sharing the same car, the system isolates lap times and statistics for each one. *Stints* are not mixed, ensuring an accurate visualization of individual performance (currently in process).
+*   **Ephemeral Storage (24h Retention):** For optimization and cleanliness, the system does not save data permanently. All session times and histories are automatically deleted after 24 hours (currently in process).
+*   **AC1 Protocols:** Packet structure designed and mapped specifically for Assetto Corsa 1.
 
-## Prerequisites
-If you are running the source code directly, you will need:
-* [Node.js](https://nodejs.org/) (v14 or higher)
+### ⚙️ Technologies Used
 
-*(Note: If you are using the pre-compiled `.exe` standalone version, no installation is required. You can find it here: https://drive.google.com/file/d/15WCacnMPL4BgfJvhaQsOyZD5ZDxrf55e/view?usp=sharing (Currently the `.exe` is a BETA version - 6/23/2026)).*
-
-## Installation
-1. Clone this repository or download the source code.
-2. Open your terminal in the project directory.
-3. Install the required WebSocket dependencies:
-   ```bash
-   npm install
+*   **Node.js**: Server engine and runtime environment.
+*   **Socket.io**: Primary library for managing WebSocket rooms and connections.
+*   **JavaScript**: Routing logic, 24h retention control, and session state management.
