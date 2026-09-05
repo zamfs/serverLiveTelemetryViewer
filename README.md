@@ -1,4 +1,4 @@
-# Server Live Telemetry
+# Server Live Telemetry v0.2
 ## Online Intermediary Server
 
 Welcome to the **Transmissor Live Telemetry** repository. This project now acts as the **online intermediary server** responsible for receiving, processing, and distributing real-time telemetry data from **Assetto Corsa**.
