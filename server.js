@@ -5,11 +5,7 @@ const { Server } = require("socket.io");
 
 const io = new Server(http, {
     cors: { 
-            origin: [
-                "http://127.0.0.1:5500",
-                "http://localhost:5500",
-                "https://livetelemetryviewer.onrender.com"
-            ], 
+            origin: "*", 
             methods: ["GET", "POST"] 
         }
 });
