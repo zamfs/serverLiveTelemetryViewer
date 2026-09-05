@@ -5,7 +5,11 @@ const { Server } = require("socket.io");
 
 const io = new Server(http, {
     cors: { 
-            origin: "*", 
+            origin: [
+                "http://127.0.0.1:5500", // local tests
+                "http://localhost:5500",
+                "https://livetelemetryviewer.onrender.com"
+            ], 
             methods: ["GET", "POST"] 
         }
 });
