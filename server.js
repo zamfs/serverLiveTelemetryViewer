@@ -9,7 +9,7 @@ const io = new Server(http, {
             origin: [
                 "http://127.0.0.1:5500", // local tests
                 "http://localhost:5500",
-                //"https://livetelemetryviewer.onrender.com"
+                "https://livetelemetryviewer.onrender.com"
             ], 
             methods: ["GET", "POST"] 
         }
