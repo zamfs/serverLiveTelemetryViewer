@@ -1,4 +1,7 @@
-# Server Live Telemetry v0.3
+# Server Live Telemetry v0.3.1
+
+## What's new in v0.3.1
+**Masked Sessions:** crypto.randomUUID() to generate a unique publicToken for each active session. The actual session key (sessionKey), which contains the player and car IDs, is now kept strictly in the backend and never exposed in URLs.
 
 ## Online Intermediary Server
 

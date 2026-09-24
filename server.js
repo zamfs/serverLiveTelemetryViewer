@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const { Server } = require("socket.io");
+const crypto = require('crypto');
 
 const io = new Server(http, {
     cors: { 
             origin: [
                 "http://127.0.0.1:5500", // local tests
                 "http://localhost:5500",
-                "https://livetelemetryviewer.onrender.com"
+                //"https://livetelemetryviewer.onrender.com"
             ], 
             methods: ["GET", "POST"] 
         }
@@ -63,6 +64,18 @@ io.on('connection', (socket) => {
     //sends the list of active cars to browser(lobby)
     socket.emit('grid_atual', Object.values(gridState));
 
+    socket.on('join_session', (token) => {
+        const sessionExists = Object.values(gridState).some(session => session.publicToken === token);
+
+        if (sessionExists) {
+            socket.join(token);
+            console.log(`Browser ${socket.id} joined room: ${token}`);
+            
+        } else {
+            socket.emit('join_error', 'Session not found or expired.');
+        }
+    });
+
     socket.on('telemetry_from_bridge', (data) => {
         
 
@@ -77,8 +90,11 @@ io.on('connection', (socket) => {
             let needsRefresh = false;
 
             if (!gridState[sessionKey]) {
+                const newToken = crypto.randomUUID();
+
                 gridState[sessionKey] = {
                     sessionKey: sessionKey,
+                    publicToken: newToken,
                     socketId: socket.id,
                     trackName: track,
                     carModel: carModel,
@@ -150,8 +166,8 @@ io.on('connection', (socket) => {
             session.lastLapCount = currentLapCount;
 
             //sends the live JSON
-            io.emit('telemetry_update', {
-                sessionKey: sessionKey,
+            io.to(session.publicToken).emit('telemetry_update', {
+                sessionKey: session.publicToken,
                 stints: session.stints,
                 ...data
             });
