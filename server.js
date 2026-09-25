@@ -65,11 +65,23 @@ io.on('connection', (socket) => {
     socket.emit('grid_atual', Object.values(gridState));
 
     socket.on('join_session', (token) => {
-        const sessionExists = Object.values(gridState).some(session => session.publicToken === token);
+        const session = Object.values(gridState).find(s => s.publicToken === token);
 
-        if (sessionExists) {
+        if (session) {
             socket.join(token);
             console.log(`Browser ${socket.id} joined room: ${token}`);
+
+            socket.emit('telemetry_update', {
+                sessionKey: session.publicToken,
+                stints:session.stints,
+                car: {
+                    model: session.carModel,
+                    driverName: session.driverName,
+                    isInPit: session.lastPitStatus
+                },
+                track: {name: session.trackName },
+                lap: { current_lap: session.lastLapCount }
+            });
             
         } else {
             socket.emit('join_error', 'Session not found or expired.');

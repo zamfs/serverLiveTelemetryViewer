@@ -1,7 +1,10 @@
-# Server Live Telemetry v0.3.1
+# Server Live Telemetry v0.3.2
 
 ## What's new in v0.3.1
 **Masked Sessions:** crypto.randomUUID() to generate a unique publicToken for each active session. The actual session key (sessionKey), which contains the player and car IDs, is now kept strictly in the backend and never exposed in URLs.
+
+## What's new in v0.3.2
+**State Synchronization:** The server now instantly transmits the complete lap and stint history upon connection (join_session), allowing late-joining spectators to view previously recorded times.
 
 ## Online Intermediary Server
 
